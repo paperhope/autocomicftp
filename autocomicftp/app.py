@@ -5,6 +5,7 @@ from autocomic import AutoComic, GooglePanelFactory
 from autocomic.googlesearch import GoogleCustomSearch
 
 app = Flask("autocomicftp")
+app.config.from_object('autocomicftp.CONFIG_SETTINGS')
 search_engine_id = ''
 client_key = ''
 

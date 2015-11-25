@@ -1,5 +1,7 @@
 # Custom patterns
 py3env/
+ftpenv/
+autocomicftp/CONFIG_SETTINGS.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
