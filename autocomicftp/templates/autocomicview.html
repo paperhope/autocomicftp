@@ -2,7 +2,7 @@
 <title>Autocomic for the people</title>
 {% if autocomic is defined %}
     {% for panel in autocomic.panels %}
-        <td>{{ panel.image }} 
+        <td><img src="{{ panel.art['link'] }}"/>
     {% endfor %}
 {% endif %}
 <form method="post">
