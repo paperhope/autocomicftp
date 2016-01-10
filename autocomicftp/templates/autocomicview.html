@@ -1,14 +1,26 @@
 <!doctype html>
 <title>Autocomic for the people</title>
 {% if autocomic is defined %}
+    <table border="0">
+    <caption>{{autocomic.title}}</caption>
+    <tr>
     {% for panel in autocomic.panels %}
-        <td><img src="{{ panel.art['link'] }}"/>
+        <td style = "text-align: center;"><img src="{{ panel.art['link'] }}"/>
     {% endfor %}
+    </tr>
+    <tr>
+    {% for panel in autocomic.panels %}
+        <td style = "text-align: center;"<>"{{ panel.text }}"</td>
+    {% endfor %}
+    </tr>
+    </table>
+
 {% endif %}
 <form method="post">
   Comic script: <textarea name="script" rows="10" cols="30">
   {{script}}
   </textarea>
+  Title: <input type="text" name="title" {% if autocomic is defined %} value="{{autocomic.title}}" {% endif %}</input>
   <input type="submit"/>
 </form>
 </html>

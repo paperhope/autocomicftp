@@ -29,8 +29,9 @@ def get_comic():
         GoogleCustomSearch(cx = app.config['SEARCH_ENGINE_ID'], 
                            api_key = app.config['CLIENT_KEY'])
     )
-    autocomic = AutoComic(request.form['script'].split('\n'), panel_factory)
-    autocomic.get_good_art()
+    autocomic = AutoComic(request.form['script'].split('\n'), panel_factory, request.form['title'])
+    autocomic.initialize_panels()
+    autocomic.set_panels_art()
     
     return autocomic
 
