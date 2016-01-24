@@ -1,26 +1,30 @@
 <!doctype html>
+<link rel="stylesheet" type="text/css" href="/css/autocomicftp.css" />
 <title>Autocomic for the people</title>
-{% if autocomic is defined %}
-    <table border="0">
-    <caption>{{autocomic.title}}</caption>
-    <tr>
-    {% for panel in autocomic.panels %}
-        <td style = "text-align: center;"><img src="{{ panel.art['link'] }}"/>
-    {% endfor %}
-    </tr>
-    <tr>
-    {% for panel in autocomic.panels %}
-        <td style = "text-align: center;"<>"{{ panel.text }}"</td>
-    {% endfor %}
-    </tr>
-    </table>
-
+<body>
+{% if comicview is defined %}
+    <table border="1">
+        <caption>{{comicview.title}}</caption>
+        {% for row in comicview.layout %}
+	    <tr>
+	    {% for el in row %}
+                <td><img src="{{ el[0]['link'] }}"/></td>
+            {% endfor %}
+	    </tr><tr>
+	    {% for el in row %}
+	        <td>{{ el[1] }}</td>
+	    {% endfor %}
+	    </tr>
+        {% endfor %}
+        </table>
 {% endif %}
 <form method="post">
+Title: <input type="text" name="title" {% if comicview is defined %} value="{{comicview.title}}" {% endif %}</input>
   Comic script: <textarea name="script" rows="10" cols="30">
-  {{script}}
+  {{ comicview.script|join('\n') }}
   </textarea>
-  Title: <input type="text" name="title" {% if autocomic is defined %} value="{{autocomic.title}}" {% endif %}</input>
   <input type="submit"/>
+  </table>
 </form>
+</body>
 </html>

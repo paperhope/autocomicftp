@@ -1,13 +1,20 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, send_from_directory
 from werkzeug.exceptions import BadRequest
 
 from autocomic import AutoComic, GooglePanelFactory
 from autocomic.googlesearch import GoogleCustomSearch
+from autocomicftp.autocomicview import AutocomicView
 
-app = Flask("autocomicftp")
+
+app = Flask("autocomicftp", static_url_path='')
 app.config.from_object('autocomicftp.CONFIG_SETTINGS')
 search_engine_id = ''
 client_key = ''
+
+
+@app.route('/css/<path:path>')
+def send_css(path):
+    return send_from_directory('css', path)
 
 @app.route("/autocomicforthepeople/", methods=['GET', 'POST'])
 def autocomic():
@@ -16,8 +23,11 @@ def autocomic():
         validate_input()
 
         autocomic = get_comic()
-        response_payload = render_template("autocomicview.html", 
-                                           script = request.form['script'], autocomic = autocomic )
+        comicview = AutocomicView(autocomic, columns=3)
+        comicview.prepare_layout()
+
+        response_payload = render_template("autocomicview.html", comicview=comicview)
+
     if request.method == 'GET':
         response_payload = render_template("autocomicview.html")
     
@@ -29,7 +39,9 @@ def get_comic():
         GoogleCustomSearch(cx = app.config['SEARCH_ENGINE_ID'], 
                            api_key = app.config['CLIENT_KEY'])
     )
-    autocomic = AutoComic(request.form['script'].split('\n'), panel_factory, request.form['title'])
+
+    script = request.form['script'].split('\n')
+    autocomic = AutoComic(script, panel_factory, request.form['title'])
     autocomic.initialize_panels()
     autocomic.set_panels_art()
     
@@ -39,6 +51,7 @@ def validate_input():
     
     if 'script' not in request.form: 
         raise BadRequest(description="Missing value for attribute script.")
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

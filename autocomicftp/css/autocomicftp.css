@@ -1,0 +1,13 @@
+body {
+    color: #009900;
+    font-family: sans-serif, Georgia;
+}
+caption {
+    font-size: xx-large;
+}
+td {
+    text-align: center;
+}
+table {
+    margin-bottom: 50px;
+}

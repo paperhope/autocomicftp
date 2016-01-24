@@ -1,0 +1,2 @@
+class EmptyComicLayout(Exception):
+    pass
